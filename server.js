@@ -13,14 +13,14 @@ require('./routes')(app);
 require('./db');
 require('./helpers/cron');
 
+app.get('/user2', (req, res) => {
+    debugger;
 
-const a = 10;
-const b = 20;
+    const data = undefined;
+    console.log(data.name); // error
 
-debugger; // execution pauses here
-
-const sum = a + b;
-console.log(sum);
+    res.send("Done");
+});
 
 
 app.listen(5000, ()=>{

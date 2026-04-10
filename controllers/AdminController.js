@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const Admin = mongoose.model('Admin');
 const User = mongoose.model('User');
 const { OAuth2Client } = require('google-auth-library');
+const nodemailer = require('nodemailer');
 
 const client = new OAuth2Client('11697718537-dqjd46buavim9ufcdipmvpfe3ksvt5lk.apps.googleusercontent.com');
 
@@ -70,6 +71,7 @@ const loginUser = async (req, res) => {
 const signupUser = async (req, res) => {
     try {
         const { name, password } = req.body;
+        console.log(req.query.age, " age");
         const hashedPassword = await bcrypt.hash(password, 10);
         let admin = new Admin({name, password: hashedPassword });
         await admin.save();
@@ -81,11 +83,34 @@ const signupUser = async (req, res) => {
     }
 }
 
+
 const getUser = async (req, res) => {
     res.status(200).send({
         message: "Protected data",
         user: req.user
     });
+}
+
+const sendMail = async (req, res) => {
+    try {
+        const transport = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: "singhalmca04@gmail.com",
+                pass: 'sdwp yrce hiya yojm' 
+            }
+        });
+        const info = await transport.sendMail({
+            from: "Test Mail from Vinay singhalmca04@gail.com",
+            to: 'vinayk@srmist.edu.in',
+            subject: 'Subject -- DSA Project Presentation',
+            text: "First Batch presetation on 9th April"
+        });
+        res.status(200).send({data: info, msg: "Email send"});
+    } catch(err) {
+        console.log("Error " + err);
+        res.status(500).send({msg: "Internal server error"});
+    }
 }
 
 const changePassword = async (req, res) => {
@@ -164,5 +189,6 @@ module.exports = {
     getUser,
     downloadFile,
     googleLogin,
-    changePassword
+    changePassword,
+    sendMail
 }

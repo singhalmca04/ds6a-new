@@ -34,12 +34,16 @@ module.exports = (app) => {
         AdminController.googleLogin(req, res);
     });
 
-    app.post('/signup', async (req, res) => {
+    app.post('/signup/:age', async (req, res) => {
         AdminController.signupUser(req, res);
     });
 
     app.get('/login', async (req, res) => {
         AdminController.loginUser(req, res);
+    });
+
+    app.get('/send/mail', async (req, res) => {
+        AdminController.sendMail(req, res);
     });
 
     app.patch('/change/password', async (req, res) => {
